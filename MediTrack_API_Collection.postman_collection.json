@@ -1,0 +1,679 @@
+{
+	"info": {
+		"_postman_id": "meditrack-api-collection",
+		"name": "MediTrack API Collection",
+		"description": "Complete API collection for MediTrack - Personal Health Monitoring Application",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\",\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"phoneNumber\": \"+1234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "register"]
+						},
+						"description": "Register a new user account"
+					}
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						},
+						"description": "Login and get JWT token. Save the token from response to use in other requests."
+					}
+				},
+				{
+					"name": "Request OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/request-otp",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "request-otp"]
+						},
+						"description": "Request OTP for MFA verification"
+					}
+				},
+				{
+					"name": "Verify OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user@example.com\",\n    \"otp\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/verify-otp",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "verify-otp"]
+						},
+						"description": "Verify OTP and complete MFA login"
+					}
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/me",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "me"]
+						},
+						"description": "Get current authenticated user's profile"
+					}
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/me?firstName=John&lastName=Doe&phoneNumber=+1234567890",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "me"],
+							"query": [
+								{
+									"key": "firstName",
+									"value": "John"
+								},
+								{
+									"key": "lastName",
+									"value": "Doe"
+								},
+								{
+									"key": "phoneNumber",
+									"value": "+1234567890",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Update user profile information"
+					}
+				},
+				{
+					"name": "Toggle MFA",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/me/toggle-mfa",
+							"host": ["{{base_url}}"],
+							"path": ["api", "users", "me", "toggle-mfa"]
+						},
+						"description": "Enable or disable MFA for the current user"
+					}
+				}
+			]
+		},
+		{
+			"name": "Family Members",
+			"item": [
+				{
+					"name": "Get All Family Members",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/family-members",
+							"host": ["{{base_url}}"],
+							"path": ["api", "family-members"]
+						},
+						"description": "Get all family members for the current user"
+					}
+				},
+				{
+					"name": "Get Family Member by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/family-members/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "family-members", "1"]
+						},
+						"description": "Get a specific family member by ID"
+					}
+				},
+				{
+					"name": "Create Family Member",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Jane\",\n    \"lastName\": \"Doe\",\n    \"dateOfBirth\": \"1990-01-15\",\n    \"relationship\": \"Spouse\",\n    \"phoneNumber\": \"+1234567891\",\n    \"email\": \"jane@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/family-members",
+							"host": ["{{base_url}}"],
+							"path": ["api", "family-members"]
+						},
+						"description": "Create a new family member"
+					}
+				},
+				{
+					"name": "Update Family Member",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Jane\",\n    \"lastName\": \"Smith\",\n    \"dateOfBirth\": \"1990-01-15\",\n    \"relationship\": \"Spouse\",\n    \"phoneNumber\": \"+1234567891\",\n    \"email\": \"jane@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/family-members/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "family-members", "1"]
+						},
+						"description": "Update an existing family member"
+					}
+				},
+				{
+					"name": "Delete Family Member",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/family-members/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "family-members", "1"]
+						},
+						"description": "Delete a family member"
+					}
+				}
+			]
+		},
+		{
+			"name": "Health Records",
+			"item": [
+				{
+					"name": "Get All Health Records",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/health-records",
+							"host": ["{{base_url}}"],
+							"path": ["api", "health-records"]
+						},
+						"description": "Get all health records for the current user's family members"
+					}
+				},
+				{
+					"name": "Get Health Records by Family Member",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/health-records?familyMemberId=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "health-records"],
+							"query": [
+								{
+									"key": "familyMemberId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Get health records for a specific family member"
+					}
+				},
+				{
+					"name": "Get Health Record by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/health-records/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "health-records", "1"]
+						},
+						"description": "Get a specific health record by ID"
+					}
+				},
+				{
+					"name": "Create Health Record",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"familyMemberId\": 1,\n    \"recordType\": \"VITAL\",\n    \"title\": \"Blood Pressure Check\",\n    \"description\": \"Regular blood pressure monitoring\",\n    \"value\": \"120/80\",\n    \"unit\": \"mmHg\",\n    \"recordedDate\": \"2025-12-19\",\n    \"doctorName\": \"Dr. Smith\",\n    \"notes\": \"Normal range\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/health-records",
+							"host": ["{{base_url}}"],
+							"path": ["api", "health-records"]
+						},
+						"description": "Create a new health record. Record types: CONDITION, VITAL, ALLERGY, PRESCRIPTION"
+					}
+				},
+				{
+					"name": "Update Health Record",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"familyMemberId\": 1,\n    \"recordType\": \"VITAL\",\n    \"title\": \"Blood Pressure Check\",\n    \"description\": \"Updated blood pressure monitoring\",\n    \"value\": \"125/82\",\n    \"unit\": \"mmHg\",\n    \"recordedDate\": \"2025-12-19\",\n    \"doctorName\": \"Dr. Smith\",\n    \"notes\": \"Slightly elevated\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/health-records/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "health-records", "1"]
+						},
+						"description": "Update an existing health record"
+					}
+				},
+				{
+					"name": "Delete Health Record",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/health-records/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "health-records", "1"]
+						},
+						"description": "Delete a health record"
+					}
+				}
+			]
+		},
+		{
+			"name": "Medications",
+			"item": [
+				{
+					"name": "Get All Medications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/medications",
+							"host": ["{{base_url}}"],
+							"path": ["api", "medications"]
+						},
+						"description": "Get all medications for the current user's family members"
+					}
+				},
+				{
+					"name": "Get Medications by Family Member",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/medications?familyMemberId=1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "medications"],
+							"query": [
+								{
+									"key": "familyMemberId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Get medications for a specific family member"
+					}
+				},
+				{
+					"name": "Get Medication by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/medications/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "medications", "1"]
+						},
+						"description": "Get a specific medication by ID"
+					}
+				},
+				{
+					"name": "Create Medication",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"familyMemberId\": 1,\n    \"name\": \"Aspirin\",\n    \"dosage\": \"100mg\",\n    \"frequency\": \"DAILY\",\n    \"startDate\": \"2025-12-01\",\n    \"endDate\": \"2025-12-31\",\n    \"instructions\": \"Take with food\",\n    \"prescribedBy\": \"Dr. Smith\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/medications",
+							"host": ["{{base_url}}"],
+							"path": ["api", "medications"]
+						},
+						"description": "Create a new medication"
+					}
+				},
+				{
+					"name": "Update Medication",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"familyMemberId\": 1,\n    \"name\": \"Aspirin\",\n    \"dosage\": \"150mg\",\n    \"frequency\": \"TWICE_DAILY\",\n    \"startDate\": \"2025-12-01\",\n    \"endDate\": \"2025-12-31\",\n    \"instructions\": \"Take with food and water\",\n    \"prescribedBy\": \"Dr. Smith\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/medications/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "medications", "1"]
+						},
+						"description": "Update an existing medication"
+					}
+				},
+				{
+					"name": "Delete Medication",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/medications/1",
+							"host": ["{{base_url}}"],
+							"path": ["api", "medications", "1"]
+						},
+						"description": "Delete a medication"
+					}
+				},
+				{
+					"name": "Create Medication Reminder",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reminderTime\": \"09:00\",\n    \"reminderType\": \"BOTH\",\n    \"daysOfWeek\": [\"Monday\", \"Tuesday\", \"Wednesday\", \"Thursday\", \"Friday\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/medications/1/reminders",
+							"host": ["{{base_url}}"],
+							"path": ["api", "medications", "1", "reminders"]
+						},
+						"description": "Create a reminder for a medication. Days: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday. Reminder types: SMS, EMAIL, BOTH"
+					}
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "Get Dashboard Data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/dashboard",
+							"host": ["{{base_url}}"],
+							"path": ["api", "dashboard"]
+						},
+						"description": "Get dashboard statistics and recent data"
+					}
+				}
+			]
+		},
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/health",
+							"host": ["{{base_url}}"],
+							"path": ["api", "health"]
+						},
+						"description": "Health check endpoint (no authentication required)"
+					}
+				}
+			]
+		},
+		{
+			"name": "Testing",
+			"item": [
+				{
+					"name": "Get Reminder Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/test/reminders/status",
+							"host": ["{{base_url}}"],
+							"path": ["api", "test", "reminders", "status"]
+						},
+						"description": "Get reminder system status and information"
+					}
+				},
+				{
+					"name": "Manually Trigger Reminders",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/test/reminders/process",
+							"host": ["{{base_url}}"],
+							"path": ["api", "test", "reminders", "process"]
+						},
+						"description": "Manually trigger reminder processing (for testing). Normally runs automatically every minute."
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
+

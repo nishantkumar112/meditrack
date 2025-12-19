@@ -1,0 +1,50 @@
+services:
+  - type: web
+    name: meditrack-backend
+    env: java
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SERVER_PORT
+        value: 10000
+      - key: DB_URL
+        fromDatabase:
+          name: meditrack-db
+          property: connectionString
+      - key: DB_USERNAME
+        fromDatabase:
+          name: meditrack-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: meditrack-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: REDIS_HOST
+        sync: false
+      - key: REDIS_PORT
+        value: 6379
+      - key: MAIL_HOST
+        sync: false
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_PHONE_NUMBER
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+
+databases:
+  - name: meditrack-db
+    databaseName: meditrack
+    user: meditrack_user
+    plan: free
+

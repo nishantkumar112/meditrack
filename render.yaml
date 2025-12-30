@@ -53,17 +53,18 @@ services:
       - key: REACT_APP_API_URL
         sync: false
 
-  # PostgreSQL Database
-  - type: pgsql
-    name: meditrack-db
-    plan: starter
-    region: oregon
-    databaseName: meditrack
-    user: meditrack_user
-
   # Redis Cache
   - type: redis
     name: meditrack-redis
     plan: starter
     region: oregon
     maxmemoryPolicy: allkeys-lru
+
+databases:
+  # PostgreSQL Database
+  - name: meditrack-db
+    postgresMajorVersion: '15'
+    plan: starter
+    region: oregon
+    databaseName: meditrack
+    user: meditrack_user

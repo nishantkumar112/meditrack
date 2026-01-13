@@ -2,7 +2,7 @@ import axios from 'axios';
 import {logout as logoutAction} from '../store/slices/authSlice';
 
 const API_BASE_URL =
-  process.env.REACT_APP_API_URL || 'http://localhost:8081/api';
+  import.meta.env.VITE_API_URL || 'http://localhost:8081/api';
 
 // Store toast functions - will be set by the interceptor
 let toastFunctions = null;

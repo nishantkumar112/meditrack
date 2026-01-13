@@ -11,6 +11,20 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+# Build argument for API URL (passed from Render environment)
+# This is required because Create React App embeds env vars at build time
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=${REACT_APP_API_URL}
+
+# Create .env file from build arg if provided (fallback for Render)
+# This ensures the env var is available during build
+RUN if [ -n "$REACT_APP_API_URL" ]; then \
+      echo "REACT_APP_API_URL=$REACT_APP_API_URL" > .env && \
+      echo "Created .env with REACT_APP_API_URL=$REACT_APP_API_URL"; \
+    else \
+      echo "Warning: REACT_APP_API_URL not set"; \
+    fi
+
 # Build the application
 RUN npm run build
 
